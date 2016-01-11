@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<!-- Base VendorName_ModuleName_index.xml -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../../lib/internal/Magento/Framework/App/etc/routes.xsd">
+    <router id="standard">
+        <route id="{{ module_name | lower }}" frontName="{{ module_name | lower }}">
+            <module name="{{ module_name }}" />
+        </route>
+    </router>
+</config>

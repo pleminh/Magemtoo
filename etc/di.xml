@@ -1,0 +1,16 @@
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="../../../../../lib/internal/Magento/Framework/ObjectManager/etc/config.xsd">
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="generateModuleCommand" xsi:type="object">Magemtoo\Command\GenerateModule</item>
+            </argument>
+        </arguments>
+    </type>
+    <virtualType name="TwigEngineTemplate" type="Magemtoo\Twig\Framework\TemplateEngine\Twig">
+    </virtualType>
+    <type name="Magemtoo\Command\GenerateModule">
+        <arguments>
+                <argument name="twigEngine" xsi:type="string">Magemtoo\Twig\Framework\TemplateEngine\Twig</argument>
+        </arguments>
+    </type>
+</config>
