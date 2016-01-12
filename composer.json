@@ -26,6 +26,14 @@
         ]
     },
     "minimum-stability": "dev",
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Magemtoo\\": ""
+        }
+    },
     "authors": [
         {
             "name": "Pascal LE MINH",
