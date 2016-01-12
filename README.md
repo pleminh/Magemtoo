@@ -55,7 +55,7 @@ $ php bin/magento magemtoo:generate:module
 ```
 
 
-Roadmap:
+Roadmap
 ----------
 - Create theme prototype 
 - Create CRUD system prototype 
