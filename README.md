@@ -18,7 +18,7 @@ Installation Instructions:
 
 Incoming ...
 
-Roadmap:
+Roadmap
 ----------
 - Create theme prototype 
 - Create CRUD system prototype 
