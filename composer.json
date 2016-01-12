@@ -25,6 +25,7 @@
             ]
         ]
     },
+    "minimum-stability": "dev",
     "authors": [
         {
             "name": "Pascal LE MINH",
