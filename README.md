@@ -45,6 +45,26 @@ Usage
 
 ### Commands
 
+## Usage
+
+```
+$ php bin/magemtoo:generate:module --help
+
+Usage:
+ magemtoo:generate:module [--vendor-name="..."] [--module-name="..."]
+
+Options:
+ --vendor-name         The vendor name - used for namespace - eg : Magemtoo
+ --module-name         The module name - word that describes what the module does. eg : Swifter
+ --help (-h)           Display this help message
+ --quiet (-q)          Do not output any message
+ --verbose (-v|vv|vvv) Increase the verbosity of messages: 1 for normal output, 2 for more verbose output and 3 for debug
+ --version (-V)        Display this application version
+ --ansi                Force ANSI output
+ --no-ansi             Disable ANSI output
+ --no-interaction (-n) Do not ask any interactive question
+```
+
 
 #### magemtoo:generate:module
 
