@@ -48,7 +48,7 @@ Usage
 ## Usage
 
 ```
-$ php bin/magemtoo:generate:module --help
+$ php bin/magento magemtoo:generate:module --help
 
 Usage:
  magemtoo:generate:module [--vendor-name="..."] [--module-name="..."]
