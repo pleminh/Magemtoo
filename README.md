@@ -78,4 +78,4 @@ $ php bin/magento magemtoo:generate:module
 Roadmap
 ----------
 - Create theme prototype 
-- Create CRUD system prototype based on the structure of [pleminh/magento2-blog-product](https://github.com/pleminh/magento2-blog-product) k
+- Create CRUD system prototype based on the structure of [pleminh/magento2-blog-product](https://github.com/pleminh/magento2-blog-product)
