@@ -6,7 +6,7 @@ Description:
 
 Magento 2 Module helps to generate a module prototype based on the vendor name and the module name.
 
- - version: 0.1
+ - version: 0.2.0
 
 Requirements:
 ----------

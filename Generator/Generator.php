@@ -27,4 +27,20 @@ class Generator extends Twig
 
         return file_put_contents($target, $this->render($template, $parameters));
     }
+
+    /**
+     * @param $dir
+     * @param $moduleName
+     * @return bool
+     */
+    protected function checkIfModuleAlreadyExists($dir, $moduleName)
+    {
+        $target = $dir .'/'. $moduleName;
+        if (is_dir($target)) {
+            throw new \RuntimeException(
+                'The module name \'' . $moduleName . '\' is already exists.'
+            );
+        }
+        return true;
+    }
 }

@@ -2,6 +2,9 @@
 namespace Magemtoo\Command;
 
 
+use Magemtoo\Command\Traits\ProcessEntityControllerTraits;
+use Magemtoo\Command\Traits\ProcessEntityTraits;
+use Magemtoo\Command\Traits\ProcessModuleSkeletonTraits;
 use Magemtoo\Generator\ModuleGenerator;
 use Magemtoo\Model\Module;
 use Magemtoo\Twig\Framework\TemplateEngine\Twig;
@@ -12,7 +15,9 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use \Magento\Framework\ObjectManagerInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Question\ChoiceQuestion;
 use Symfony\Component\Console\Question\Question;
+
 
 /**
  * Class GenerateModule
@@ -21,32 +26,12 @@ use Symfony\Component\Console\Question\Question;
  *
  * @package Magemtoo\Command
  */
-class GenerateModule extends Command
+//class GenerateModule extends Command
+class GenerateModule extends AbstractCommand
 {
-
-    protected $output;
-    protected $om;
-    protected $twigEngine;
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
-
-    public function __construct(ObjectManagerInterface $manager)
-    {
-        $this->objectManager = $manager;
-        parent::__construct();
-        $this->twigEngine  = $this->objectManager
-            ->get('Magemtoo\Twig\Framework\TemplateEngine\Twig');
-    }
-
-    /**
-     * @return ObjectManagerInterface
-     */
-    protected function getObjectManager()
-    {
-        return $this->objectManager;
-    }
+    use ProcessEntityTraits,
+        ProcessEntityControllerTraits,
+        ProcessModuleSkeletonTraits;
 
     protected function configure()
     {
@@ -56,6 +41,8 @@ class GenerateModule extends Command
             [
                 new InputOption('vendor-name', null, InputOption::VALUE_REQUIRED, 'The vendor name - used for namespace - eg : Magemtoo'),
                 new InputOption('module-name', null, InputOption::VALUE_REQUIRED, 'The module name - word that describes what the module does. eg : Swifter'),
+                new InputOption('entity-name', null, InputOption::VALUE_OPTIONAL, 'The entity name'),
+                new InputOption('entity-columns-name', null, InputOption::VALUE_OPTIONAL, 'The entity columns name '),
 //                new InputOption('namespace', null, InputOption::VALUE_REQUIRED, 'The namespace of the module to create'),
             ]
         );
@@ -76,7 +63,7 @@ class GenerateModule extends Command
 
         $this->output = $output;
 
-        // TODO
+        // @TODO
     }
 
     /**
@@ -86,8 +73,9 @@ class GenerateModule extends Command
      */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
-
         $dialog = $this->getHelperSet()->get('dialog');
+        $helper = $this->getHelperSet()->get('question');
+
 
         // Get ModuleName
         $output->writeln(array(
@@ -132,7 +120,79 @@ class GenerateModule extends Command
         $input->setOption('vendor-name', $vendorName);
         $input->setOption('module-name', $moduleName);
 
-        // Summary and confirmation
+
+        /****************************
+         * QUESTION
+         ***************************/
+        processDisplayMainMenu: $type = $this->getMainMenu($helper, $input, $output);
+
+        switch($type) {
+
+            /****************************
+             * PROCESS FOR Entity
+             ***************************/
+            case 'Entity':
+                $this->initProcessEntity($this->getHelperSet(), $output, $input);
+                break;
+
+            /******************************
+             * PROCESS FOR Module Skeleton
+             *****************************/
+            case 'Module Skeleton':
+                break;
+
+            /******************************
+             * PROCESS FOR Menu Admin
+             *****************************/
+            case 'Menu Admin':
+                break;
+
+            /******************************
+             * PROCESS FOR Block
+             *****************************/
+            case 'Block':
+                break;
+
+            /******************************
+             * PROCESS FOR Module Skeleton
+             *****************************/
+            case 'Controller':
+                $this->initProcessController($this->getHelperSet(), $output, $input);
+                break;
+
+            /******************************
+             * PROCESS FOR view
+             *****************************/
+            case 'view':
+                break;
+
+            /******************************
+             * PROCESS FOR Nothing!
+             *****************************/
+            case 'Nothing! I\'m done! ':
+                break;
+
+        }
+
+        // Would you like to go main menu ?
+        /****************************
+         * QUESTION
+         ***************************/
+        $choice = $this->buildChoicesQuestion($helper, $input, $output,
+            'Would you like to go main menu ?',
+            ['no', 'yes']
+        );
+
+        if ('yes' === $choice) {
+            // Goto process display main menu
+            goto processDisplayMainMenu;
+        }
+
+        /******************************************************
+         *
+         * SUMMARY AND CONFIRMATION
+         *
+         ******************************************************/
         $output->writeln(array(
             '',
             $this->getHelper('formatter')->formatBlock('Summary before generation', 'bg=blue;fg-white', true),
@@ -150,6 +210,31 @@ class GenerateModule extends Command
 
         $this->createGenerator($vendorName, $moduleName, $this->twigEngine->getAppDir())->generateModule();
 
+    }
+
+
+
+    /**
+     * @param $helper
+     * @param $input
+     * @param $output
+     * @return mixed
+     */
+    protected function getMainMenu(&$helper, &$input, &$output)
+    {
+        /****************************
+         * QUESTION
+         ***************************/
+        $mainMenu = new ChoiceQuestion(
+            'What do you want to generate?',
+            [ 'Module Skeleton', 'Menu Admin', 'Entity', 'Block', 'Controller', 'View',  'Nothing!'],
+            null
+        );
+        $mainMenu->setMultiselect(false);
+
+        $choice = $helper->ask($input, $output, $mainMenu);
+        $output->writeln('You have selected: ' .$choice);
+        return $choice;
     }
 
     /**
