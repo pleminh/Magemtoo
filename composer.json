@@ -4,7 +4,7 @@
     "require": {
         "magento/module-backend": "~100.0.0",
         "php": "~5.5.0|~5.6.0|~7.0.0",
-        "twig/twig": "dev-master"
+        "twig/twig": "^1.24"
     },
     "type": "magento2-module",
     "version": "0.1.0",
